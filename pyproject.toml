@@ -128,10 +128,27 @@ conflicts = [
 constraint-dependencies = [
     "Django<6.0",
     "elasticsearch<7.14.0",
+    "openedx-events<11.1.1",
+    "confluent-kafka<2.15.0",
 ]
 
 [tool.edx_lint]
-uv_constraints = []
+uv_constraints = [
+    # openedx-events>=11.1.1 removed openedx_events.event_bus.avro.tests.test_utilities
+    # (dropped test files from its wheel as part of its own tooling modernization), but
+    # this repo's test suite imports SubTestData0/create_simple_signal from it directly
+    # in src/edx_event_bus_kafka/internal/tests/test_producer.py. Pin below that version
+    # until the test suite is updated to stop relying on an upstream package's internal
+    # test utilities (tracked as a follow-up, see PR description).
+    "openedx-events<11.1.1",
+    # confluent-kafka>=2.15.0 bundles a newer librdkafka that assigns a name
+    # (INVALID_SHARE_SESSION_EPOCH, from KIP-932 share groups) to error code 123,
+    # which src/edx_event_bus_kafka/internal/tests/test_consumer.py::test_check_event_error
+    # relies on being unrecognized to exercise its "unknown error code" formatting path.
+    # Pin until that test is made robust to librdkafka's error-code table changing over
+    # time (tracked as a follow-up, see PR description).
+    "confluent-kafka<2.15.0",
+]
 
 [tool.isort]
 include_trailing_comma = true

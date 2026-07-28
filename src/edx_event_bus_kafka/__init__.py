@@ -13,5 +13,5 @@ from edx_event_bus_kafka.internal.producer import KafkaEventProducer, create_pro
 
 try:
     __version__ = version('edx-event-bus-kafka')
-except PackageNotFoundError:
+except PackageNotFoundError:  # pragma: no cover
     pass
