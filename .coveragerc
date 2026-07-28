@@ -1,7 +1,7 @@
 [run]
 branch = True
 data_file = .coverage
-source=edx_event_bus_kafka
+source=src/edx_event_bus_kafka
 omit =
     test_settings
     *migrations*

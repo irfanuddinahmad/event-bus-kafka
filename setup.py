@@ -121,7 +121,7 @@ def is_requirement(line):
     return line and line.strip() and not line.startswith(('-r', '#', '-e', 'git+', '-c'))
 
 
-VERSION = get_version('edx_event_bus_kafka', '__init__.py')
+VERSION = get_version('src', 'edx_event_bus_kafka', '__init__.py')
 
 if sys.argv[-1] == 'tag':
     print("Tagging the version on github:")
@@ -143,6 +143,7 @@ setup(
     packages=[
         'edx_event_bus_kafka',
     ],
+    package_dir={'': 'src'},
     include_package_data=True,
     install_requires=load_requirements('requirements/base.in'),
     python_requires=">=3.8",
